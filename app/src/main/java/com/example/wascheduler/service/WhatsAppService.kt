@@ -85,7 +85,7 @@ class WhatsAppService : Service() {
             }
             ACTION_SEND_NOW -> {
                 val messageId = intent.getLongExtra(EXTRA_MESSAGE_ID, -1)
-                if (messageId != -1) {
+                if (messageId != -1L) {
                     scope.launch {
                         sendMessageNow(messageId)
                     }

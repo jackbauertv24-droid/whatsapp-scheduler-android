@@ -43,12 +43,12 @@ class ChatListFragment : Fragment() {
         
         chatList.layoutManager = LinearLayoutManager(requireContext())
         chatAdapter = ChatAdapter { chat ->
-            val action = ChatListFragmentDirections.actionChatListFragmentToScheduleFragment(
-                chatJid = chat.jid,
-                chatName = chat.name,
-                isGroup = chat.isGroup
-            )
-            findNavController().navigate(action)
+            val bundle = Bundle().apply {
+                putString("chatJid", chat.jid)
+                putString("chatName", chat.name)
+                putBoolean("isGroup", chat.isGroup)
+            }
+            findNavController().navigate(R.id.scheduleFragment, bundle)
         }
         chatList.adapter = chatAdapter
         

@@ -12,7 +12,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
 
 class WebViewManager(
     private val context: Context,

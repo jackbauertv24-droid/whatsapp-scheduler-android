@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import com.example.wascheduler.R
 import com.example.wascheduler.data.MessageDatabase
 import com.example.wascheduler.data.ScheduledMessage
@@ -19,7 +18,9 @@ import java.util.*
 
 class ScheduleFragment : Fragment() {
     
-    private val args: ScheduleFragmentArgs by navArgs()
+    private var chatJid: String = ""
+    private var chatName: String = ""
+    private var isGroup: Boolean = false
     
     private lateinit var recipientSection: LinearLayout
     private lateinit var recipientIcon: ImageView
@@ -44,10 +45,6 @@ class ScheduleFragment : Fragment() {
         add(Calendar.MINUTE, 30)
     }
     
-    private var chatJid: String = ""
-    private var chatName: String = ""
-    private var isGroup: Boolean = false
-    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,9 +59,11 @@ class ScheduleFragment : Fragment() {
         initViews(view)
         setupListeners()
         
-        chatJid = args.chatJid
-        chatName = args.chatName
-        isGroup = args.isGroup
+        arguments?.let {
+            chatJid = it.getString("chatJid", "")
+            chatName = it.getString("chatName", "")
+            isGroup = it.getBoolean("isGroup", false)
+        }
         
         updateRecipientDisplay()
         updateDateTimeButtons()

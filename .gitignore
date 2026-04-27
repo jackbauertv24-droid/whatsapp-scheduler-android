@@ -9,6 +9,7 @@
 build/
 local.properties
 gradle.properties
+gradle-8.4/
 
 # Android Studio
 .idea/

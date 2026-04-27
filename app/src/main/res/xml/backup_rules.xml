@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <exclude domain="file" path="whatsapp_auth" />
-    <exclude domain="sharedpref" path="auth_store.xml" />
-    <include domain="database" path="scheduled_messages.db" />
+    <include domain="sharedpref" path="."/>
+    <include domain="database" path="."/>
+    <exclude domain="sharedpref" path="auth_store.xml"/>
 </full-backup-content>

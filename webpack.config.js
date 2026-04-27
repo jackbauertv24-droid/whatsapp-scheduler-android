@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
     entry: './js-src/whatsapp-client.js',
@@ -31,19 +30,13 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env'],
                         plugins: [
-                            '@babel/plugin-transform-runtime'
+                            ['@babel/plugin-transform-runtime', { regenerator: true }]
                         ]
                     }
                 }
             }
         ]
     },
-    plugins: [
-        new webpack.ProvidePlugin({
-            Buffer: ['buffer', 'Buffer'],
-            process: 'process/browser'
-        })
-    ],
     mode: 'production',
     target: 'web'
 };

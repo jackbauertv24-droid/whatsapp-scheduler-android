@@ -35,23 +35,6 @@ module.exports = {
             'audio-decode': false
         }
     },
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: [
-                            ['@babel/plugin-transform-runtime', { regenerator: true }]
-                        ]
-                    }
-                }
-            }
-        ]
-    },
     mode: 'production',
     target: 'web',
     externals: {

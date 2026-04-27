@@ -12,40 +12,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-js:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install JS dependencies
-        run: npm install
-      
-      - name: Build JavaScript bundle
-        run: npm run build
-      
-      - name: Upload JS bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: js-bundle
-          path: app/src/main/assets/whatsapp/baileys-bundle.js
-
   build-android:
-    needs: build-js
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Download JS bundle
-        uses: actions/download-artifact@v4
-        with:
-          name: js-bundle
-          path: app/src/main/assets/whatsapp
       
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -77,15 +47,6 @@ jobs:
         with:
           name: app-release-unsigned
           path: app/build/outputs/apk/release/app-release-unsigned.apk
-      
-      - name: Upload Release APK (if signed)
-        if: ${{ env.SIGNING_KEY != '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-signed
-          path: app/build/outputs/apk/release/app-release.apk
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
   create-release:
     needs: build-android

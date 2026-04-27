@@ -17,13 +17,13 @@
     <string name="auth_error_invalid_code">Invalid code. Please try again.</string>
     <string name="auth_generating_code">Generating pairing code...</string>
     <string name="auth_connecting">Connecting...</string>
-    <string name="auth_pairing_instruction">Enter this code in WhatsApp on your phone, or enter the code WhatsApp sends to you below.</string>
     
     <string name="main_chats_title">Recent Chats</string>
     <string name="main_schedule_title">Schedule Message</string>
     <string name="main_select_chat">Select a chat</string>
     <string name="main_to_label">To:</string>
     <string name="main_message_hint">Type your message here...</string>
+    <string name="main_message_label">Message:</string>
     <string name="main_when_label">When:</string>
     <string name="main_specific_time">Send at specific time</string>
     <string name="main_delay">Send after delay</string>
@@ -37,8 +37,9 @@
     <string name="main_error_invalid_time">Please select a valid future time</string>
     <string name="main_loading_chats">Loading chats...</string>
     <string name="main_no_chats">No chats found</string>
+    <string name="main_select_date">Select Date</string>
+    <string name="main_select_time">Select Time</string>
     
-    <string name="queue_title">Scheduled Messages</string>
     <string name="queue_title">Scheduled Messages</string>
     <string name="queue_pending">Pending</string>
     <string name="queue_sent">Sent</string>
@@ -68,7 +69,4 @@
     
     <string name="group_chat">Group</string>
     <string name="individual_chat">Individual</string>
-    <string name="main_message_label">Message:</string>
-    <string name="main_select_date">Select Date</string>
-    <string name="main_select_time">Select Time</string>
 </resources>

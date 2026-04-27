@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './js-src/whatsapp-client.js',
@@ -15,9 +16,9 @@ module.exports = {
             os: false,
             crypto: false,
             stream: false,
-            buffer: require.resolve('buffer/'),
-            util: require.resolve('util/'),
-            events: require.resolve('events/')
+            buffer: false,
+            util: false,
+            events: false
         }
     },
     module: {
@@ -38,7 +39,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new (require('webpack')).ProvidePlugin({
+        new webpack.ProvidePlugin({
             Buffer: ['buffer', 'Buffer'],
             process: 'process/browser'
         })

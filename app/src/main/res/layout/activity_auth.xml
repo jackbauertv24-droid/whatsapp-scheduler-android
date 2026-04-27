@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/auth_continue"
-            android:style="@style/AppButton"
+            style="@style/AppButton"
             android:padding="12dp"/>
     </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/auth_verify"
-            android:style="@style/AppButton"
+            style="@style/AppButton"
             android:padding="12dp"/>
     </LinearLayout>
 
@@ -150,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/auth_start_app"
-            android:style="@style/AppButton"
+            style="@style/AppButton"
             android:padding="12dp"/>
     </LinearLayout>
 

@@ -17,7 +17,22 @@ module.exports = {
             stream: false,
             buffer: false,
             util: false,
-            events: false
+            events: false,
+            assert: false,
+            url: false,
+            zlib: false,
+            readline: false,
+            child_process: false,
+            http: false,
+            https: false,
+            net: false,
+            tty: false
+        },
+        alias: {
+            'jimp': false,
+            'sharp': false,
+            'link-preview-js': false,
+            'audio-decode': false
         }
     },
     module: {
@@ -38,5 +53,11 @@ module.exports = {
         ]
     },
     mode: 'production',
-    target: 'web'
+    target: 'web',
+    externals: {
+        'jimp': 'commonjs jimp',
+        'sharp': 'commonjs sharp',
+        'link-preview-js': 'commonjs link-preview-js',
+        'audio-decode': 'commonjs audio-decode'
+    }
 };

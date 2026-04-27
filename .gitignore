@@ -24,7 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Generated JS bundle (should be rebuilt)
-app/src/main/assets/whatsapp/baileys-bundle.js
+app/src/main/assets/whatsapp/*.js
+app/src/main/assets/whatsapp/*.LICENSE.txt
 
 # OS files
 .DS_Store

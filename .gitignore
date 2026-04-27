@@ -1,0 +1,43 @@
+# Built files
+*.apk
+*.aab
+*.class
+*.dex
+
+# Gradle
+.gradle/
+build/
+local.properties
+gradle.properties
+
+# Android Studio
+.idea/
+*.iml
+captures/
+.externalNativeBuild
+.cxx
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Generated JS bundle (should be rebuilt)
+app/src/main/assets/whatsapp/baileys-bundle.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.jks
+*.keystore
+secrets.properties
+
+# Logs
+*.log
+
+# Backup files
+*~
+*.bak

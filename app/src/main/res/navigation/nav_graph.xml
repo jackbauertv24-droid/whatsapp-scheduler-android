@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/chatListFragment">
+
+    <fragment
+        android:id="@+id/chatListFragment"
+        android:name="com.example.wascheduler.ui.ChatListFragment"
+        android:label="@string/nav_chats"
+        tools:layout="@layout/fragment_chat_list">
+        
+        <action
+            android:id="@+id/action_chatListFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment">
+            <argument
+                android:name="chatJid"
+                app:argType="string"/>
+            <argument
+                android:name="chatName"
+                app:argType="string"/>
+            <argument
+                android:name="isGroup"
+                app:argType="boolean"
+                android:defaultValue="false"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.example.wascheduler.ui.ScheduleFragment"
+        android:label="@string/nav_schedule"
+        tools:layout="@layout/fragment_schedule">
+        
+        <argument
+            android:name="chatJid"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="chatName"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="isGroup"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/queueFragment"
+        android:name="com.example.wascheduler.ui.QueueFragment"
+        android:label="@string/nav_queue"
+        tools:layout="@layout/fragment_queue"/>
+
+</navigation>

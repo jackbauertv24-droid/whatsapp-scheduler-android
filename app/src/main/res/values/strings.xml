@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WhatsApp Scheduler</string>
+    <string name="auth_title">Connect WhatsApp</string>
+    <string name="auth_phone_hint">Enter your phone number</string>
+    <string name="auth_phone_example">Example: +1234567890</string>
+    <string name="auth_continue">Continue</string>
+    <string name="auth_pairing_title">Pairing Code</string>
+    <string name="auth_pairing_instruction">WhatsApp will send a pairing code to your phone. Enter it below.</string>
+    <string name="auth_pairing_code_label">Your pairing code:</string>
+    <string name="auth_enter_code_hint">Enter 8-digit code</string>
+    <string name="auth_verify">Verify</string>
+    <string name="auth_connected">Connected!</string>
+    <string name="auth_phone_label">Your number:</string>
+    <string name="auth_start_app">Start Using App</string>
+    <string name="auth_error_connection">Connection failed. Please try again.</string>
+    <string name="auth_error_invalid_code">Invalid code. Please try again.</string>
+    <string name="auth_generating_code">Generating pairing code...</string>
+    <string name="auth_connecting">Connecting...</string>
+    <string name="auth_pairing_instruction">Enter this code in WhatsApp on your phone, or enter the code WhatsApp sends to you below.</string>
+    
+    <string name="main_chats_title">Recent Chats</string>
+    <string name="main_schedule_title">Schedule Message</string>
+    <string name="main_select_chat">Select a chat</string>
+    <string name="main_to_label">To:</string>
+    <string name="main_message_hint">Type your message here...</string>
+    <string name="main_when_label">When:</string>
+    <string name="main_specific_time">Send at specific time</string>
+    <string name="main_delay">Send after delay</string>
+    <string name="main_hours">hours</string>
+    <string name="main_minutes">minutes</string>
+    <string name="main_schedule_button">Schedule Message</string>
+    <string name="main_scheduling">Scheduling...</string>
+    <string name="main_success">Message scheduled!</string>
+    <string name="main_error_empty_message">Please enter a message</string>
+    <string name="main_error_no_chat">Please select a chat</string>
+    <string name="main_error_invalid_time">Please select a valid future time</string>
+    <string name="main_loading_chats">Loading chats...</string>
+    <string name="main_no_chats">No chats found</string>
+    
+    <string name="queue_title">Scheduled Messages</string>
+    <string name="queue_title">Scheduled Messages</string>
+    <string name="queue_pending">Pending</string>
+    <string name="queue_sent">Sent</string>
+    <string name="queue_failed">Failed</string>
+    <string name="queue_empty">No scheduled messages</string>
+    <string name="queue_cancel">Cancel</string>
+    <string name="queue_cancel_confirm">Cancel this message?</string>
+    <string name="queue_yes">Yes</string>
+    <string name="queue_no">No</string>
+    
+    <string name="nav_chats">Chats</string>
+    <string name="nav_schedule">Schedule</string>
+    <string name="nav_queue">Queue</string>
+    <string name="nav_logout">Logout</string>
+    
+    <string name="service_notification_title">WhatsApp Scheduler Active</string>
+    <string name="service_notification_content">Monitoring scheduled messages</string>
+    <string name="service_connected">Connected to WhatsApp</string>
+    <string name="service_disconnected">Disconnected from WhatsApp</string>
+    <string name="service_message_sent">Message sent to %s</string>
+    <string name="service_message_failed">Failed to send message to %s</string>
+    
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Your scheduled messages will still be sent, but you won\'t be able to manage them.</string>
+    <string name="logout_confirm">Logout</string>
+    <string name="logout_cancel">Cancel</string>
+    
+    <string name="group_chat">Group</string>
+    <string name="individual_chat">Individual</string>
+    <string name="main_message_label">Message:</string>
+    <string name="main_select_date">Select Date</string>
+    <string name="main_select_time">Select Time</string>
+</resources>

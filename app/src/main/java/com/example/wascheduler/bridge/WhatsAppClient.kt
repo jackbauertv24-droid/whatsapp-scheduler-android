@@ -1,6 +1,7 @@
 package com.example.wascheduler.bridge
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,7 @@ class WhatsAppClient private constructor(
     val error: StateFlow<String?> = _error
     
     private var lastMessageCallback: ((Boolean, String?) -> Unit)? = null
+    private var webViewInitialized = false
     
     data class Chat(
         val jid: String,
@@ -55,6 +57,7 @@ class WhatsAppClient private constructor(
     }
     
     private fun handleEvent(type: String, data: JsonObject) {
+        Log.d("WhatsAppClient", "Event: $type")
         when (type) {
             "connecting" -> {
                 _connectionState.value = ConnectionState.CONNECTING
@@ -62,6 +65,7 @@ class WhatsAppClient private constructor(
             "pairing_code" -> {
                 _pairingCode.value = data.get("code")?.asString
                 _connectionState.value = ConnectionState.PAIRING
+                Log.d("WhatsAppClient", "Pairing code received: ${_pairingCode.value}")
             }
             "pairing_code_entered" -> {
                 _connectionState.value = ConnectionState.CONNECTING
@@ -70,6 +74,7 @@ class WhatsAppClient private constructor(
                 _connectionState.value = ConnectionState.CONNECTED
                 _userPhone.value = data.get("phone")?.asString
                 _pairingCode.value = null
+                Log.d("WhatsAppClient", "Connected: ${_userPhone.value}")
             }
             "disconnected" -> {
                 val shouldReconnect = data.get("shouldReconnect")?.asBoolean ?: false
@@ -101,13 +106,25 @@ class WhatsAppClient private constructor(
             }
             "error" -> {
                 _error.value = data.get("message")?.asString ?: "Unknown error"
+                Log.e("WhatsAppClient", "Error: ${_error.value}")
             }
         }
     }
     
     fun init(phoneNumber: String) {
+        Log.d("WhatsAppClient", "Init called for: $phoneNumber")
         webViewManager.initWebView()
-        webViewManager.initWhatsApp(phoneNumber)
+        webViewInitialized = true
+        
+        scope.launch {
+            delay(2000)
+            Log.d("WhatsAppClient", "Calling initWhatsApp after delay")
+            webViewManager.initWhatsApp(phoneNumber)
+            
+            delay(1000)
+            Log.d("WhatsAppClient", "Calling requestPairingCode after delay")
+            webViewManager.requestPairingCode()
+        }
     }
     
     fun requestPairingCode() {

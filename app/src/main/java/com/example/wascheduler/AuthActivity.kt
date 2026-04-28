@@ -149,7 +149,6 @@ class AuthActivity : AppCompatActivity() {
     private fun initWhatsApp(phone: String) {
         showLoading(getString(R.string.auth_generating_code))
         whatsappClient.init(phone)
-        whatsappClient.requestPairingCode()
     }
     
     private fun enterPairingCode(code: String) {

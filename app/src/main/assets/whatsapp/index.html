@@ -6,15 +6,38 @@
     <title>WhatsApp Scheduler</title>
 </head>
 <body>
-    <div id="status">Loading...</div>
-    <script src="baileys-bundle.js"></script>
+    <div id="status">Loading WhatsApp client...</div>
     <script>
-        document.getElementById('status').textContent = 'Ready';
-        window.AndroidBridge = window.AndroidBridge || {
-            onEvent: function(data) {
-                console.log('Event: ' + data);
+        // Fallback for AndroidBridge if not injected by WebView
+        if (!window.AndroidBridge) {
+            console.warn('AndroidBridge not found - using fallback');
+            window.AndroidBridge = {
+                onEvent: function(data) {
+                    console.log('Event (fallback): ' + data);
+                },
+                log: function(msg) {
+                    console.log('Log (fallback): ' + msg);
+                },
+                getStoredAuth: function() {
+                    return '';
+                }
+            };
+        }
+        console.log('Bridge ready');
+    </script>
+    <script src="baileys-bundle.js" onerror="console.error('Failed to load bundle')"></script>
+    <script>
+        function checkWhatsApp() {
+            if (typeof window.WhatsApp !== 'undefined' && typeof window.WhatsApp.init === 'function') {
+                document.getElementById('status').textContent = 'WhatsApp client ready';
+                console.log('WhatsApp client loaded successfully');
+                window.AndroidBridge.log('WhatsApp client loaded');
+            } else {
+                console.log('Waiting for WhatsApp client...');
+                setTimeout(checkWhatsApp, 100);
             }
-        };
+        }
+        setTimeout(checkWhatsApp, 500);
     </script>
 </body>
 </html>

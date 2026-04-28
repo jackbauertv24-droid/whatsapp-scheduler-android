@@ -4,12 +4,14 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
 
@@ -20,6 +22,7 @@ class WebViewManager(
     private var webView: WebView? = null
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(Dispatchers.Main)
+    private val gson = Gson()
     
     private var connectionState = ConnectionState.DISCONNECTED
     private var pairingCode: String? = null
@@ -45,22 +48,31 @@ class WebViewManager(
                 mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                 blockNetworkImage = false
                 loadsImagesAutomatically = true
+                mediaPlaybackRequiresUserGesture = false
             }
             
-            webChromeClient = WebChromeClient()
+            webChromeClient = object : WebChromeClient() {
+                override fun onConsoleMessage(message: android.webkit.ConsoleMessage?): Boolean {
+                    Log.d("WebViewConsole", "${message?.message()} (${message?.sourceId()}:${message?.lineNumber()})")
+                    return true
+                }
+            }
+            
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     Log.d("WebViewManager", "Page finished: $url")
-                    injectBridge()
+                    checkWhatsAppReady()
                 }
                 
                 override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-                    Log.e("WebViewManager", "Error: ${error?.description}")
+                    Log.e("WebViewManager", "Error loading ${request?.url}: ${error?.description}")
                 }
             }
             
             addJavascriptInterface(JsBridge { type, data ->
-                handleJsEvent(type, data)
+                handler.post {
+                    handleJsEvent(type, data)
+                }
             }, "AndroidBridge")
         }
         
@@ -69,27 +81,25 @@ class WebViewManager(
     }
     
     private fun loadWhatsAppClient() {
+        Log.d("WebViewManager", "Loading WhatsApp client")
         webView?.loadUrl("file:///android_asset/whatsapp/index.html")
     }
     
-    private fun injectBridge() {
-        val js = """
-            (function() {
-                window.AndroidBridge = {
-                    onEvent: function(data) {
-                        console.log('Event: ' + data);
-                    },
-                    log: function(msg) {
-                        console.log(msg);
-                    },
-                    getStoredAuth: function() {
-                        return '';
+    private fun checkWhatsAppReady() {
+        handler.postDelayed({
+            webView?.evaluateJavascript(
+                "(function() { return typeof WhatsApp !== 'undefined' && typeof WhatsApp.init === 'function'; })();",
+                { result ->
+                    Log.d("WebViewManager", "WhatsApp ready: $result")
+                    if (result == "true") {
+                        Log.d("WebViewManager", "WhatsApp client loaded successfully")
+                    } else {
+                        Log.e("WebViewManager", "WhatsApp client not loaded, retrying...")
+                        handler.postDelayed({ checkWhatsAppReady() }, 500)
                     }
-                };
-                console.log('Bridge injected');
-            })();
-        """
-        webView?.evaluateJavascript(js, null)
+                }
+            )
+        }, 1000)
     }
     
     private fun handleJsEvent(type: String, data: JsonObject) {
@@ -134,6 +144,7 @@ class WebViewManager(
                 onEvent(type, data)
             }
             "error" -> {
+                Log.e("WebViewManager", "JS Error: ${data.get("message")?.asString}")
                 onEvent(type, data)
             }
             else -> {
@@ -144,25 +155,29 @@ class WebViewManager(
     
     fun initWhatsApp(phoneNumber: String) {
         connectionState = ConnectionState.CONNECTING
-        val js = "WhatsApp.init('$phoneNumber')"
+        Log.d("WebViewManager", "Init WhatsApp for: $phoneNumber")
+        val js = "if (typeof WhatsApp !== 'undefined') { WhatsApp.init('$phoneNumber'); } else { console.error('WhatsApp not loaded'); }"
         evaluateJs(js)
     }
     
     fun requestPairingCode() {
-        evaluateJs("WhatsApp.requestPairingCode()")
+        Log.d("WebViewManager", "Requesting pairing code")
+        evaluateJs("if (typeof WhatsApp !== 'undefined') { WhatsApp.requestPairingCode(); }")
     }
     
     fun enterPairingCode(code: String) {
-        evaluateJs("WhatsApp.enterPairingCode('$code')")
+        Log.d("WebViewManager", "Entering pairing code: $code")
+        evaluateJs("if (typeof WhatsApp !== 'undefined') { WhatsApp.enterPairingCode('$code'); }")
     }
     
     fun getChats() {
-        evaluateJs("WhatsApp.getChats()")
+        Log.d("WebViewManager", "Getting chats")
+        evaluateJs("if (typeof WhatsApp !== 'undefined') { WhatsApp.getChats(); }")
     }
     
     fun sendMessage(jid: String, content: String, callback: ((success: Boolean, messageId: String?) -> Unit)? = null) {
         val escapedContent = content.replace("'", "\\'").replace("\n", "\\n")
-        val js = "WhatsApp.sendMessage('$jid', '$escapedContent')"
+        val js = "if (typeof WhatsApp !== 'undefined') { WhatsApp.sendMessage('$jid', '$escapedContent'); }"
         
         if (callback != null) {
             scope.launch {
@@ -176,7 +191,7 @@ class WebViewManager(
     }
     
     fun disconnect() {
-        evaluateJs("WhatsApp.disconnect()")
+        evaluateJs("if (typeof WhatsApp !== 'undefined') { WhatsApp.disconnect(); }")
         connectionState = ConnectionState.DISCONNECTED
     }
     
@@ -198,6 +213,7 @@ class WebViewManager(
     
     private fun evaluateJs(js: String) {
         handler.post {
+            Log.d("WebViewManager", "Executing JS: $js")
             webView?.evaluateJavascript(js, { result ->
                 Log.d("WebViewManager", "JS result: $result")
             })
